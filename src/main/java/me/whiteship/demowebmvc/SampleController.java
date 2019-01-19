@@ -4,13 +4,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping(method = RequestMethod.GET)
+@RequestMapping("/hello")
 public class SampleController {
 
-    @RequestMapping("/hello")
+    @RequestMapping("/keesun")
     @ResponseBody
-    public String hello() {
-        return "hello";
+    public String helloKeesun() {
+        return "hello keesun";
     }
 
 }
