@@ -10,15 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class SampleController {
 
-    @GetMapping("/hello")
+    @GetHelloMapping
     @ResponseBody
     public String hello() {
-        return "hello";
-    }
-
-    @PostMapping("/hello")
-    @ResponseBody
-    public String helloPost() {
         return "hello";
     }
 
