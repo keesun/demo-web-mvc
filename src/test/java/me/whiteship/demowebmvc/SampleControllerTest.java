@@ -10,8 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
@@ -21,7 +20,17 @@ public class SampleControllerTest {
     MockMvc mockMvc;
 
     @Test
-    public void deleteEvent() throws Exception {
+    public void eventForm() throws Exception {
+        mockMvc.perform(get("/events/form"))
+                .andDo(print())
+                .andExpect(view().name("/events/form"))
+                .andExpect(model().attributeExists("event"))
+        ;
+    }
+
+
+    @Test
+    public void postEvent() throws Exception {
         mockMvc.perform(post("/events")
                     .param("name", "keesun")
                     .param("limit", "20"))
@@ -30,6 +39,8 @@ public class SampleControllerTest {
                 .andExpect(jsonPath("name").value("keesun"))
         ;
     }
+
+
 
 
 }
