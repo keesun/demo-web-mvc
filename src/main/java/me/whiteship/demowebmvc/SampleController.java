@@ -1,22 +1,20 @@
 package me.whiteship.demowebmvc;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.MatrixVariable;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.Optional;
 
 @Controller
 public class SampleController {
 
-    @GetMapping("/events/{id}")
+    @PostMapping("/events")
     @ResponseBody
-    public Event getEvent(@PathVariable Integer id, @MatrixVariable String name) {
+    public Event getEvent(@RequestParam String name,
+                          @RequestParam Integer limit) {
         Event event = new Event();
-        event.setId(id);
         event.setName(name);
+        event.setLimit(limit);
         return event;
     }
 

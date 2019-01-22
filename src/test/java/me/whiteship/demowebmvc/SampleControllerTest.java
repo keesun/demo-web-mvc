@@ -22,10 +22,12 @@ public class SampleControllerTest {
 
     @Test
     public void deleteEvent() throws Exception {
-        mockMvc.perform(get("/events/1;name=keesun"))
+        mockMvc.perform(post("/events")
+                    .param("name", "keesun")
+                    .param("limit", "20"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(1))
+                .andExpect(jsonPath("name").value("keesun"))
         ;
     }
 
