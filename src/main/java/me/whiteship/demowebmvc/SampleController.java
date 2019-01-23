@@ -6,6 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
@@ -40,23 +41,29 @@ public class SampleController {
     @PostMapping("/events/form/limit")
     public String eventsFormLimitSubmit(@Validated @ModelAttribute Event event,
                                         BindingResult bindingResult,
-                                        SessionStatus sessionStatus) {
+                                        SessionStatus sessionStatus,
+                                        RedirectAttributes attributes) {
         if (bindingResult.hasErrors()) {
             return "/events/form-limit";
         }
         sessionStatus.setComplete();
+        attributes.addAttribute("name", event.getName());
+        attributes.addAttribute("limit", event.getLimit());
         return "redirect:/events/list";
     }
 
     @GetMapping("/events/list")
-    public String getEvents(Model model, HttpSession httpSession) {
-        LocalDateTime visitTime = (LocalDateTime) httpSession.getAttribute("visitTime");
+    public String getEvents(@ModelAttribute("newEvent") Event event,
+                            Model model,
+                            @SessionAttribute LocalDateTime visitTime) {
         System.out.println(visitTime);
-        Event event = new Event();
-        event.setName("spring");
-        event.setLimit(10);
+
+        Event spring = new Event();
+        spring.setName("spring");
+        spring.setLimit(10);
 
         List<Event> eventList = new ArrayList<>();
+        eventList.add(spring);
         eventList.add(event);
 
         model.addAttribute(eventList);
