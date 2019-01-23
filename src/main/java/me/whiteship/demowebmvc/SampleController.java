@@ -47,14 +47,12 @@ public class SampleController {
             return "/events/form-limit";
         }
         sessionStatus.setComplete();
-        attributes.addAttribute("name", event.getName());
-        attributes.addAttribute("limit", event.getLimit());
+        attributes.addFlashAttribute("newEvent", event);
         return "redirect:/events/list";
     }
 
     @GetMapping("/events/list")
-    public String getEvents(@ModelAttribute("newEvent") Event event,
-                            Model model,
+    public String getEvents(Model model,
                             @SessionAttribute LocalDateTime visitTime) {
         System.out.println(visitTime);
 
@@ -62,9 +60,11 @@ public class SampleController {
         spring.setName("spring");
         spring.setLimit(10);
 
+        Event newEvent = (Event) model.asMap().get("newEvent");
+
         List<Event> eventList = new ArrayList<>();
         eventList.add(spring);
-        eventList.add(event);
+        eventList.add(newEvent);
 
         model.addAttribute(eventList);
 
