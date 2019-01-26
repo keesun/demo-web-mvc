@@ -2,7 +2,6 @@ package me.whiteship.demowebmvc;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +16,12 @@ import java.util.List;
 @Controller
 @SessionAttributes("event")
 public class EventController {
+
+    @ExceptionHandler({EventException.class, RuntimeException.class})
+    public String eventErrorHandler(RuntimeException ex, Model model) {
+        model.addAttribute("message", "runtime error");
+        return "error";
+    }
 
     @InitBinder("event")
     public void initEventBinder(WebDataBinder webDataBinder) {
@@ -32,8 +36,10 @@ public class EventController {
 
     @GetMapping("/events/form/name")
     public String eventsFormName(Model model) {
-        model.addAttribute("event", new Event());
-        return "/events/form-name";
+        throw new EventException();
+//
+//        model.addAttribute("event", new Event());
+//        return "/events/form-name";
     }
 
     @PostMapping("/events/form/name")
