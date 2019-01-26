@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -17,6 +18,12 @@ import java.util.List;
 @Controller
 @SessionAttributes("event")
 public class EventController {
+
+    @InitBinder("event")
+    public void initEventBinder(WebDataBinder webDataBinder) {
+        webDataBinder.setDisallowedFields("id");
+        webDataBinder.addValidators(new EventValidator());
+    }
 
     @ModelAttribute
     public void categories(Model model) {
@@ -35,6 +42,8 @@ public class EventController {
         if (bindingResult.hasErrors()) {
             return "/events/form-name";
         }
+
+
         return "redirect:/events/form/limit";
     }
 

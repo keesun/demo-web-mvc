@@ -7,6 +7,7 @@
 <body>
 <form action="#" th:action="@{/events/form/name}" method="post" th:object="${event}">
     <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect date</p>
+    StartDate: <input type="text" title="startDate" th:field="*{startDate}"/>
     Name: <input type="text" title="name" th:field="*{name}"/>
     <input type="submit" value="Create"/>
 </form>
